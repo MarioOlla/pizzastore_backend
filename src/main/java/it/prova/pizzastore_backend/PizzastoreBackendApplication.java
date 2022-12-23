@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PizzastoreBackendApplication implements CommandLineRunner{
+public class PizzastoreBackendApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PizzastoreBackendApplication.class, args);
@@ -13,7 +13,7 @@ public class PizzastoreBackendApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		
+
 	}
 
 }
