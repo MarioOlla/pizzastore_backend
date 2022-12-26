@@ -27,6 +27,8 @@ public class Pizza {
 	private String descrizione;
 	@Column(name = "prezzo")
 	private Float prezzo;
+	@Column(name = "attivo")
+	private Boolean attivo = true;
 	@ManyToMany
 	@JoinTable(name = "pizza_ingrediente", joinColumns = @JoinColumn(name = "pizza_id", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ingrediene_id", referencedColumnName = "ID"))
 	private List<Ingrediente> ingredienti = new ArrayList<Ingrediente>();
@@ -35,11 +37,11 @@ public class Pizza {
 
 	}
 
-	public Pizza(Long id, String descrizione, Float prezzo, List<Ingrediente> ingredienti) {
-		super();
+	public Pizza(Long id, String descrizione, Float prezzo, Boolean attivo, List<Ingrediente> ingredienti) {
 		this.id = id;
 		this.descrizione = descrizione;
 		this.prezzo = prezzo;
+		this.attivo = attivo;
 		this.ingredienti = ingredienti;
 	}
 
