@@ -9,7 +9,7 @@ public interface IngredienteService {
 
 	public Ingrediente caricaSingoloElemento(Long id);
 
-	public Ingrediente aggiorna(Ingrediente ruoloInstance);
+	public Ingrediente aggiorna(Long id ,Ingrediente ruoloInstance);
 
 	public Ingrediente inserisciNuovo(Ingrediente ruoloInstance);
 
