@@ -69,6 +69,14 @@ public class Pizza {
 		this.prezzo = prezzo;
 	}
 
+	public Boolean getAttivo() {
+		return attivo;
+	}
+
+	public void setAttivo(Boolean attivo) {
+		this.attivo = attivo;
+	}
+
 	public List<Ingrediente> getIngredienti() {
 		return ingredienti;
 	}
