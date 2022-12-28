@@ -1,4 +1,4 @@
-package it.prova.pizzastore_backend.controller.ingrediente;
+package it.prova.pizzastore_backend.controller;
 
 import java.util.List;
 

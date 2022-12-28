@@ -22,7 +22,7 @@ public class Cliente {
 	@Column(name = "indirizzo")
 	private String indirizzo;
 	@Column(name = "attivo")
-	private Boolean attivo = false;
+	private Boolean attivo = true;
 	
 	public Cliente() {
 		
