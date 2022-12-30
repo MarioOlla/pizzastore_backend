@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Table(name = "pizza")
 public class Pizza {
 
-	public static final Float PREZZO_BASE = 5.50f;
+	private static final Float PREZZO_BASE = 5.50f;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,6 +59,10 @@ public class Pizza {
 
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
+	}
+
+	public static Float getPrezzoBase() {
+		return PREZZO_BASE;
 	}
 
 	public Float getPrezzo() {

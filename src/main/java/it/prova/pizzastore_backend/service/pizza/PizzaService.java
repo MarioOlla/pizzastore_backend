@@ -17,4 +17,6 @@ public interface PizzaService {
 	public void rimuovi(Long idToRemove);
 
 	public Pizza cercaPerDescrizione(String descrizione);
+
+	public Float calcolaPrezzoPizza(Pizza pizza);
 }

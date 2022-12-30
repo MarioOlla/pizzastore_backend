@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import it.prova.pizzastore_backend.model.Ingrediente;
 import it.prova.pizzastore_backend.model.Pizza;
 import it.prova.pizzastore_backend.repository.pizza.PizzaRepository;
 
@@ -46,5 +47,13 @@ public class PizzaServiceImpl implements PizzaService {
 	public Pizza cercaPerDescrizione(String descrizione) {
 		return pizzaRepository.findByDescrizione(descrizione);
 	}
-
+	
+	@Override
+	public Float calcolaPrezzoPizza(Pizza pizza) {
+		float res = Pizza.getPrezzoBase();
+		for (Ingrediente ingredienteItem: pizza.getIngredienti()) {
+			res += ingredienteItem.getPrezzo();
+		}
+		return res;
+	}
 }

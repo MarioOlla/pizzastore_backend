@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.prova.pizzastore_backend.dto.IntervalloDate;
 import it.prova.pizzastore_backend.dto.OrdineDTO;
+import it.prova.pizzastore_backend.dto.StatsOutput;
 import it.prova.pizzastore_backend.service.ordine.OrdineService;
 
 @RestController
@@ -48,5 +50,10 @@ public class OrdineController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remove(@PathVariable(name = "id", required = true) Long id) {
 		service.rimuovi(id);
+	}
+	
+	@GetMapping("/stats")
+	public StatsOutput statistiche(@RequestBody IntervalloDate intervallo) {
+		return service.getStats(intervallo);
 	}
 }
