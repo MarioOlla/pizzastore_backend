@@ -5,17 +5,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import it.prova.pizzastore_backend.model.Ordine;
 
 public class OrdineDTO {
 	
 	private Long id;
+	@NotNull(message = "{ordine.data.notnull}")
 	private LocalDate data;
-	private Boolean closed;
+	private Boolean closed = false;
+	@NotBlank(message = "{ordine.codice.notblank}")
 	private String codice;
+	@NotNull(message = "{ordine.fattorino.notnull}")
 	private UtenteDTO fattorino;
 	private Float costoTotale;
 	private List<PizzaDTO> pizze = new ArrayList<>();
+	@NotNull(message = "{ordine.cliente.notnull}")
 	private ClienteDTO cliente;
 	
 	public OrdineDTO() {

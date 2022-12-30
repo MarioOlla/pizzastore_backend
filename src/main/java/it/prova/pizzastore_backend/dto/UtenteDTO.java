@@ -4,14 +4,23 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import it.prova.pizzastore_backend.model.Utente;
 
 public class UtenteDTO {
 	
 	private Long id;
+	@NotBlank(message = "{utente.nome.notblank}")
 	private String nome;
+	@NotBlank(message = "{utente.cognome.notblank}")
 	private String cognome;
+	@NotBlank(message = "{utente.username.notblank}")
+	@Size(min = 3, max = 15, message = "Il valore inserito '${validatedValue}' deve essere lungo tra {min} e {max} caratteri")
 	private String username;
+	@NotNull(message = "{utente.dataDiNascita.notnull}")
 	private LocalDate dataDiNascita;
 	
 	public UtenteDTO() {

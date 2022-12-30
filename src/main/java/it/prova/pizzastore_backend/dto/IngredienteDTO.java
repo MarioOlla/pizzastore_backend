@@ -3,12 +3,20 @@ package it.prova.pizzastore_backend.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import it.prova.pizzastore_backend.model.Ingrediente;
 
 public class IngredienteDTO {
 	private Long id;
+	@NotBlank(message = "{ingrediente.codice.notblank}")
 	private String codice;
+	@NotBlank(message = "{ingrediente.descrizione.notblank}")
 	private String descrizione;
+	@NotNull(message = "{ingrediente.prezzo.notnull}")
+	@Min(value = 0, message = "ingrediente.prezzo.notNegative")
 	private Float prezzo;
 
 	public IngredienteDTO() {

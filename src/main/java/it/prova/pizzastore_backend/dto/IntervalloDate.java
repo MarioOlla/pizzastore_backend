@@ -2,9 +2,13 @@ package it.prova.pizzastore_backend.dto;
 
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotNull;
+
 public class IntervalloDate {
 	
+	@NotNull(message = "{intervallo.datada.notnull}")
 	private LocalDate dataDa;
+	@NotNull(message = "{intervallo.dataa.notnull}")
 	private LocalDate dataA;
 	
 	public IntervalloDate() {

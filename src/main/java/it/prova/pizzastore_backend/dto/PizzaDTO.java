@@ -4,11 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import it.prova.pizzastore_backend.model.Pizza;
 
 public class PizzaDTO {
 	private Long id;
+	@NotBlank(message = "{pizza.descrizione.notblank}")
 	private String descrizione;
+	@NotNull(message = "{pizza.prezzo.notnull}")
+	@Min(value = 5,message = "pizza.prezzo.belowMinValue")
 	private Float prezzo;
 	private Boolean attivo;
 	private List<IngredienteDTO> ingredienti = new ArrayList<>();
