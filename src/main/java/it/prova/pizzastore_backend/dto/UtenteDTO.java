@@ -13,7 +13,6 @@ public class UtenteDTO {
 	private String cognome;
 	private String username;
 	private LocalDate dataDiNascita;
-	private String token;
 	
 	public UtenteDTO() {
 		
@@ -25,7 +24,6 @@ public class UtenteDTO {
 		this.cognome = cognome;
 		this.username = username;
 		this.dataDiNascita = dataDiNascita;
-		this.token = token;
 	}
 
 	public Long getId() {
@@ -66,16 +64,7 @@ public class UtenteDTO {
 
 	public void setDataDiNascita(LocalDate dataDiNascita) {
 		this.dataDiNascita = dataDiNascita;
-	}
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-	
+	}	
 
 	public Utente buildModel() {
 		Utente res = new Utente();

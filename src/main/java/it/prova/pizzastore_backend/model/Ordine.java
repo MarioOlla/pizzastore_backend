@@ -34,7 +34,7 @@ public class Ordine {
 	@JoinColumn(name = "fattorino_id", nullable = false)
 	private Utente fattorino;
 	@Column(name = "costoTotale")
-	private Long costoTotale;
+	private Float costoTotale;
 	@ManyToMany
 	@JoinTable(name = "ordine_pizza", joinColumns = @JoinColumn(name = "ordine_id", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "pizza_id", referencedColumnName = "ID"))
 	private List<Pizza> pizze = new ArrayList<>();
@@ -46,7 +46,7 @@ public class Ordine {
 
 	}
 
-	public Ordine(Long id, LocalDate data, Boolean closed, String codice, Utente fattorino, Long costoTotale,
+	public Ordine(Long id, LocalDate data, Boolean closed, String codice, Utente fattorino, Float costoTotale,
 			List<Pizza> pizze, Cliente cliente) {
 		this.id = id;
 		this.data = data;
@@ -98,11 +98,11 @@ public class Ordine {
 		this.fattorino = fattorino;
 	}
 
-	public Long getCostoTotale() {
+	public Float getCostoTotale() {
 		return costoTotale;
 	}
 
-	public void setCostoTotale(Long costoTotale) {
+	public void setCostoTotale(Float costoTotale) {
 		this.costoTotale = costoTotale;
 	}
 
