@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import it.prova.pizzastore_backend.exception.ElementNotFoundException;
 import it.prova.pizzastore_backend.model.Cliente;
 import it.prova.pizzastore_backend.repository.cliente.ClienteRepository;
 
@@ -39,7 +40,13 @@ public class ClienteServiceImpl implements ClienteService {
 
 	@Override
 	public void rimuovi(Long idToRemove) {
-		repository.existsById(idToRemove);
+		Cliente clienteToDisable = repository.findById(idToRemove).orElse(null);
+		if(clienteToDisable == null)
+			throw new ElementNotFoundException("couldn't find Cliente with id:"+idToRemove);
+		else {
+			clienteToDisable.setAttivo(false);
+			repository.save(clienteToDisable);
+		}
 	}
 
 	@Override
