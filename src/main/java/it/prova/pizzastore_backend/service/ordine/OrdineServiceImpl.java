@@ -12,6 +12,9 @@ import it.prova.pizzastore_backend.dto.ClienteDTO;
 import it.prova.pizzastore_backend.dto.IntervalloDate;
 import it.prova.pizzastore_backend.dto.StatsOutput;
 import it.prova.pizzastore_backend.exception.ElementNotFoundException;
+import it.prova.pizzastore_backend.exception.IdNotNullForInsertException;
+import it.prova.pizzastore_backend.exception.IdNullBeforeEditException;
+import it.prova.pizzastore_backend.exception.InvertedOrSameDatesException;
 import it.prova.pizzastore_backend.model.Cliente;
 import it.prova.pizzastore_backend.model.Ordine;
 import it.prova.pizzastore_backend.model.Pizza;
@@ -22,7 +25,7 @@ public class OrdineServiceImpl implements OrdineService {
 
 	@Autowired
 	private OrdineRepository ordineRepository;
-	
+
 	@Override
 	@Transactional
 	public List<Ordine> listAll() {
@@ -32,18 +35,28 @@ public class OrdineServiceImpl implements OrdineService {
 	@Override
 	@Transactional
 	public Ordine caricaSingoloElemento(Long id) {
-		return ordineRepository.findById(id).orElse(null);
+		Ordine o = ordineRepository.findById(id).orElse(null);
+		if (o == null)
+			throw new ElementNotFoundException("Couldn't find Ordine with id:" + id);
+		return o;
 	}
 
 	@Override
 	@Transactional
 	public Ordine aggiorna(Long id, Ordine ordineInstance) {
+		if (ordineInstance.getId() == null)
+			throw new IdNullBeforeEditException("This Ordine does not have a valorized id");
+		Ordine o = ordineRepository.findById(id).orElse(null);
+		if (o == null)
+			throw new ElementNotFoundException("Couldn't find Ordine with id:" + id);
 		return ordineRepository.save(ordineInstance);
 	}
 
 	@Override
 	@Transactional
 	public Ordine inserisciNuovo(Ordine ordineInstance) {
+		if (ordineInstance.getId() != null)
+			throw new IdNotNullForInsertException("Expected no id, got id:" + ordineInstance.getId() + " instead");
 		return ordineRepository.save(ordineInstance);
 	}
 
@@ -62,7 +75,7 @@ public class OrdineServiceImpl implements OrdineService {
 	@Override
 	public Float calcolaPrezzoOrdine(Ordine ordine) {
 		float res = 0f;
-		for (Pizza pizzaItem: ordine.getPizze()) {
+		for (Pizza pizzaItem : ordine.getPizze()) {
 			res += pizzaItem.getPrezzo();
 		}
 		return res;
@@ -72,21 +85,21 @@ public class OrdineServiceImpl implements OrdineService {
 	@Transactional
 	public Float incassiTotaliDaA(LocalDate dataDa, LocalDate dataA) {
 		Float res = ordineRepository.incassiTotaliDaA(dataDa, dataA);
-		return res!=null?res:0f;
+		return res != null ? res : 0f;
 	}
 
 	@Override
 	@Transactional
 	public Long numeroOrdiniDaA(LocalDate dataDa, LocalDate dataA) {
 		Long res = ordineRepository.numeroOrdiniDaA(dataDa, dataA);
-		return res!=null?res:0;
+		return res != null ? res : 0;
 	}
 
 	@Override
 	@Transactional
 	public Long numeroPizzeDaA(LocalDate dataDa, LocalDate dataA) {
 		Long res = ordineRepository.numeroPizzeDaA(dataDa, dataA);
-		return res!=null?res:0;
+		return res != null ? res : 0;
 	}
 
 	@Override
@@ -98,15 +111,18 @@ public class OrdineServiceImpl implements OrdineService {
 	@Override
 	@Transactional
 	public StatsOutput getStats(IntervalloDate intervallo) {
+		if (!intervallo.getDataDa().isBefore(intervallo.getDataA()))
+			throw new InvertedOrSameDatesException("The dates are inverted or they are the same");
 		StatsOutput stats = new StatsOutput();
 		stats.setDataDa(intervallo.getDataDa());
 		stats.setDataA(intervallo.getDataA());
 		stats.setRicaviTotali(this.incassiTotaliDaA(intervallo.getDataDa(), intervallo.getDataA()));
 		stats.setNumeroOrdini(this.numeroOrdiniDaA(intervallo.getDataDa(), intervallo.getDataA()));
 		stats.setNumeroPizze(this.numeroPizzeDaA(intervallo.getDataDa(), intervallo.getDataA()));
-		stats.setCostiTotali(Pizza.getPrezzoBase()*stats.getNumeroPizze());
-		stats.setClientiVirtuosi(ClienteDTO.buildDTOListFromModelList( this.clientiVirtuosiDaA(intervallo.getDataDa(), intervallo.getDataA())));
-		return stats;		
+		stats.setCostiTotali(Pizza.getPrezzoBase() * stats.getNumeroPizze());
+		stats.setClientiVirtuosi(ClienteDTO
+				.buildDTOListFromModelList(this.clientiVirtuosiDaA(intervallo.getDataDa(), intervallo.getDataA())));
+		return stats;
 	}
 
 	@Override
@@ -119,8 +135,8 @@ public class OrdineServiceImpl implements OrdineService {
 	@Transactional
 	public Ordine chiudiOrdine(Long id) {
 		Ordine ordineReloaded = ordineRepository.findById(id).orElse(null);
-		if(ordineReloaded == null)
-			throw new ElementNotFoundException("couldn't find ordine with id:"+id);
+		if (ordineReloaded == null)
+			throw new ElementNotFoundException("couldn't find ordine with id:" + id);
 		else {
 			ordineReloaded.setClosed(true);
 			ordineRepository.save(ordineReloaded);

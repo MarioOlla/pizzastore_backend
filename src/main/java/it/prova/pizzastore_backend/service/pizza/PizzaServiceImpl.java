@@ -7,6 +7,9 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import it.prova.pizzastore_backend.exception.ElementNotFoundException;
+import it.prova.pizzastore_backend.exception.IdNotNullForInsertException;
+import it.prova.pizzastore_backend.exception.IdNullBeforeEditException;
 import it.prova.pizzastore_backend.model.Ingrediente;
 import it.prova.pizzastore_backend.model.Pizza;
 import it.prova.pizzastore_backend.repository.pizza.PizzaRepository;
@@ -25,16 +28,26 @@ public class PizzaServiceImpl implements PizzaService {
 
 	@Override
 	public Pizza caricaSingoloElemento(Long id) {
-		return pizzaRepository.findById(id).orElse(null);
+		Pizza p = pizzaRepository.findById(id).orElse(null);
+		if(p == null)
+			throw new ElementNotFoundException("Couldn't find Pizza with id:"+id);
+		return p;
 	}
 
 	@Override
 	public Pizza aggiorna(Long id, Pizza pizzaInstance) {
+		if(pizzaInstance.getId() == null)
+			throw new IdNullBeforeEditException("This Pizza does not have a valorized id");
+		Pizza p = pizzaRepository.findById(id).orElse(null);
+		if(p == null)
+			throw new ElementNotFoundException("Couldn't find Pizza with id:"+id);
 		return pizzaRepository.save(pizzaInstance);
 	}
 
 	@Override
 	public Pizza inserisciNuovo(Pizza pizzaInstance) {
+		if(pizzaInstance.getId() == null)
+			throw new IdNotNullForInsertException("Expected no id, got id:" + pizzaInstance.getId() + " instead");
 		return pizzaRepository.save(pizzaInstance);
 	}
 
