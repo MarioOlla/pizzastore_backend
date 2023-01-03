@@ -128,4 +128,10 @@ public class OrdineServiceImpl implements OrdineService {
 		return ordineReloaded;
 	}
 
+	@Override
+	@Transactional
+	public List<Ordine> findByExample(Ordine example) {
+		return ordineRepository.findByExample(example);
+	}
+
 }

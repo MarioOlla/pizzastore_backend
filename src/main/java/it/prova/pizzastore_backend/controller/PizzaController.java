@@ -2,6 +2,8 @@ package it.prova.pizzastore_backend.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,12 +37,12 @@ public class PizzaController {
 	}
 	
 	@PostMapping
-	public PizzaDTO inserisci(@RequestBody PizzaDTO input) {
+	public PizzaDTO inserisci(@RequestBody @Valid PizzaDTO input) {
 		return PizzaDTO.buildDTOFromModel(pizzaService.inserisciNuovo(input.buildModelFromDTO()));
 	}
 	
 	@PutMapping("/{id}")
-	public PizzaDTO aggiorna (@PathVariable(name = "id", required = true) Long id ,@RequestBody PizzaDTO input) {
+	public PizzaDTO aggiorna (@PathVariable(name = "id", required = true) Long id ,@RequestBody @Valid PizzaDTO input) {
 		return PizzaDTO.buildDTOFromModel(pizzaService.aggiorna( id,input.buildModelFromDTO()));
 	}
 	

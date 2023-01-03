@@ -2,6 +2,8 @@ package it.prova.pizzastore_backend.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,12 +37,12 @@ public class OrdineController {
 	}
 	
 	@PostMapping
-	public OrdineDTO inserisci(@RequestBody OrdineDTO input) {
+	public OrdineDTO inserisci(@RequestBody @Valid OrdineDTO input) {
 		return OrdineDTO.buildDTOFromModel(service.inserisciNuovo(input.buildModelFromDTO()));
 	}
 	
 	@PutMapping("/{id}")
-	public OrdineDTO aggiorna (@PathVariable(name = "id", required = true) Long id ,@RequestBody OrdineDTO input) {
+	public OrdineDTO aggiorna (@PathVariable(name = "id", required = true) Long id ,@RequestBody @Valid OrdineDTO input) {
 		return OrdineDTO.buildDTOFromModel(service.aggiorna( id,input.buildModelFromDTO()));
 	}
 	

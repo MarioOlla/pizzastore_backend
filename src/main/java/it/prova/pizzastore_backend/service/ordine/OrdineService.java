@@ -37,5 +37,7 @@ public interface OrdineService {
 	public List<Ordine> listaOrdiniDi(String name);
 
 	public Ordine chiudiOrdine(Long id);
+
+	public List<Ordine> findByExample(Ordine example);
 	
 }
