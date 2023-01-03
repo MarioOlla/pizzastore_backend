@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import it.prova.pizzastore_backend.dto.ClienteDTO;
 import it.prova.pizzastore_backend.dto.IntervalloDate;
 import it.prova.pizzastore_backend.dto.StatsOutput;
+import it.prova.pizzastore_backend.exception.ElementNotFoundException;
 import it.prova.pizzastore_backend.model.Cliente;
 import it.prova.pizzastore_backend.model.Ordine;
 import it.prova.pizzastore_backend.model.Pizza;
@@ -106,6 +107,25 @@ public class OrdineServiceImpl implements OrdineService {
 		stats.setCostiTotali(Pizza.getPrezzoBase()*stats.getNumeroPizze());
 		stats.setClientiVirtuosi(ClienteDTO.buildDTOListFromModelList( this.clientiVirtuosiDaA(intervallo.getDataDa(), intervallo.getDataA())));
 		return stats;		
+	}
+
+	@Override
+	@Transactional
+	public List<Ordine> listaOrdiniDi(String name) {
+		return ordineRepository.findByFattorino(name);
+	}
+
+	@Override
+	@Transactional
+	public Ordine chiudiOrdine(Long id) {
+		Ordine ordineReloaded = ordineRepository.findById(id).orElse(null);
+		if(ordineReloaded == null)
+			throw new ElementNotFoundException("couldn't find ordine with id:"+id);
+		else {
+			ordineReloaded.setClosed(true);
+			ordineRepository.save(ordineReloaded);
+		}
+		return ordineReloaded;
 	}
 
 }

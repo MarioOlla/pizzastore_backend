@@ -12,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import it.prova.pizzastore_backend.model.Ruolo;
+
 @Configuration
 @EnableWebSecurity 
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -43,12 +45,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				
 				.authorizeHttpRequests() 
-				.antMatchers("**").permitAll()
+				.antMatchers("/api/auth/**").permitAll()
 				//tutti gli utenti autenticati possono richiedere le info
-//				.antMatchers("**").authenticated()
-//				.antMatchers("**").hasRole("ROLE_ADMIN")
-//				.antMatchers("**").hasAnyRole("ROLE_ADMIN", "ROLE_USER")
-				// .antMatchers("/anonymous*").anonymous()
+				.antMatchers("**").authenticated()
+				.antMatchers("/api/cliente").hasRole(Ruolo.ADMIN_ROLE)
+				.antMatchers("/api/pizza","/api/ingrediente","/api/ordine").hasRole(Ruolo.PIZZAIOLO_ROLE)
+				.antMatchers("/api/fattorino").hasRole(Ruolo.FATTORINO_ROLE)
+				.antMatchers("/api/proprietario").hasRole(Ruolo.PROPRIETARIO_ROLE)
+				//.antMatchers("/anonymous*").anonymous()
 				.anyRequest().authenticated()
 				.and()
 				

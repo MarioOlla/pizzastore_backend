@@ -33,5 +33,9 @@ public interface OrdineService {
 	public List<Cliente> clientiVirtuosiDaA(LocalDate dataDa, LocalDate dataA);
 
 	public StatsOutput getStats(IntervalloDate intervallo);
+
+	public List<Ordine> listaOrdiniDi(String name);
+
+	public Ordine chiudiOrdine(Long id);
 	
 }

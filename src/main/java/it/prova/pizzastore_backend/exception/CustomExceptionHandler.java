@@ -47,4 +47,16 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 	
+	@ExceptionHandler(ElementNotFoundException.class)
+	public ResponseEntity<Object> handleIdNotNullForInsertException(ElementNotFoundException ex,
+			WebRequest request) {
+
+		Map<String, Object> body = new LinkedHashMap<>();
+		body.put("timestamp", LocalDateTime.now());
+		body.put("message", ex.getMessage());
+		body.put("status", HttpStatus.NOT_FOUND);
+
+		return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+	}
+	
 }
